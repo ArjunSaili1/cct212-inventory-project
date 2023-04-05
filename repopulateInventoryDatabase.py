@@ -16,10 +16,10 @@ try:
 
     cur.execute("""
                 CREATE TABLE Inventory
-                (Item_Id integer PRIMARY KEY,
-                Item_Name text NOT NULL,
-                Item_Store_Name text NOT NULL,
-                Item_Amount integer NOT NULL)
+                (Id integer PRIMARY KEY,
+                Name text NOT NULL,
+                Store text NOT NULL,
+                Amount integer NOT NULL)
                 """)
     con.commit()
 
@@ -27,7 +27,7 @@ try:
         for item in items:
             cur.execute("""
                         INSERT INTO Inventory
-                        (Item_Name, Item_Store_Name, Item_Amount) VALUES
+                        (Name, Store, Amount) VALUES
                         (?, ?, ?)
                         """, (item, store, randint(0, 100)))
     con.commit()

@@ -11,11 +11,10 @@ try:
 
     cur.execute("""
                 CREATE TABLE Employees 
-                (Employee_Id integer PRIMARY KEY,
-                Employee_Name text NOT NULL,
-                Employee_Email text NOT NULL,
-                Employee_Password text NOT NULL,
-                Employee_Store_Name text NOT NULL)
+                (Id integer PRIMARY KEY,
+                Username text NOT NULL,
+                Password text NOT NULL,
+                Store text NOT NULL)
                 """)
     con.commit()
 
