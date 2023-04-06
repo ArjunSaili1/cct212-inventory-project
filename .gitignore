@@ -1,2 +1,4 @@
 # Ignore all db files
 *.db
+python_db.db
+*.pyc
