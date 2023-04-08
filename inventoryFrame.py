@@ -22,6 +22,32 @@ def validate_digit(input):
         return False
 
 
+def delete_from_db(inventory_table, location):
+    con = sqlite3.connect("python_db.db")
+    cursor = con.cursor()
+    item_id = int(inventory_table.focus())
+    try:
+        query = cursor.execute("SELECT Name FROM Inventory "
+                               f"WHERE Store='{location}' "
+                               f"AND Id={item_id}")
+        item_name = query.fetchone()
+        response = messagebox.askokcancel("Delete Item",
+                                          f"Are you sure you would like to "
+                                          f"delete {item_name[0]} from your "
+                                          f"inventory? This action cannot be "
+                                          f"undone")
+        if response:
+            cursor.execute("DELETE FROM Inventory "
+                           f"WHERE Store='{location}' "
+                           f"AND Id={item_id}")
+            con.commit()
+        else:
+            messagebox.showinfo("Delete Status",
+                                "Operation Cancelled.")
+    except sqlite3.Error as e:
+        print(f"Error {e.args[0]}")
+
+
 def add_database(inventory_table, item_entry, amount_entry, location):
     try:
         con = sqlite3.connect("python_db.db")
@@ -176,7 +202,9 @@ def make_inventory_frame(root, location):
                                                          item_entry,
                                                          amount_entry,
                                                          location))
-        delete_button = Button(inventory_frame, text="Delete Selected")
+        delete_button = Button(inventory_frame, text="Delete Selected",
+                               command=lambda: delete_from_db(inventory_tree,
+                                                              location))
         update_button = Button(inventory_frame, text="Update Selected",
                                command=lambda: update_init(inventory_tree,
                                                            item_entry,
