@@ -171,34 +171,34 @@ class InventoryFrame:
             print(f"Error {e.args[0]}")
 
     def update_database(self, item_entry, amount_entry, add_button):
+        new_name = item_entry.get()
+        new_amount = amount_entry.get()
+        item_id = int(self.tree.focus())
         try:
             response = None
-            if item_entry.get() and amount_entry.get():
-                entry = self.cursor.execute("SELECT Id,Name,Store,Amount FROM Inventory")
-                for (id, name, store, amount) in entry:
-                    if id == int(self.tree.focus()):
-                        response = messagebox.askokcancel("Update Item",
-                                                          f"Do you wish to update the item '{name}' with an amount "
-                                                          f"of {amount} to '{item_entry.get()}' with an amount "
-                                                          f"of {amount_entry.get()}?")
-
+            if new_name and new_amount:
+                entry = self.cursor.execute(f"SELECT Name,Store,Amount FROM Inventory WHERE Id={item_id}")
+                for (name, store, amount) in entry:
+                    response = messagebox.askokcancel("Update Item",
+                                                      f"Do you wish to update the item '{name}' with an amount "
+                                                      f"of {amount} to '{new_name}' with an amount "
+                                                      f"of {new_amount}?")
                 if response:
                     messagebox.showinfo("Update Status", "Item updated.")
                     exec_statement = f"UPDATE Inventory SET Name = " \
-                                     f"'{item_entry.get()}', Amount = '{amount_entry.get()}' WHERE Id = '{int(self.tree.focus())}';"
-
+                                     f"'{new_name}', Amount = '{new_amount}' " \
+                                     f"WHERE Id = '{item_id}';"
                     self.cursor.execute(exec_statement)
                     self.tree.delete(*self.tree.get_children())
                     self.connection.commit()
                     self.refresh_lists()
                 else:
                     messagebox.showinfo("Update Status", "Operation cancelled.")
-
                 item_entry.delete(0, END)
                 amount_entry.delete(0, END)
                 add_button.config(text="Add Items to this store",
-                                  command=lambda: self.add_database(item_entry.get(),
-                                                               amount_entry.get()))
+                                  command=lambda: self.add_database(new_name,
+                                                                    new_amount))
         except sqlite3.Error as e:
             print(f"Error {e.args[0]}")
 
