@@ -1,4 +1,4 @@
-from inventoryFrame import make_inventory_frame
+from inventoryFrame import InventoryFrame
 import loginFrame
 import sqlite3
 from tkinter import *
@@ -30,8 +30,7 @@ def signup(root, username_entry, password_entry, store_variable, missing_label, 
                             VALUES (?, ?, ?)
                             """, (username_entry.get(), password_entry.get(), store_variable.get()))
                 con.commit()
-
-                make_inventory_frame(root, store_variable.get())
+                InventoryFrame(root, store_variable.get()).build_tree()
 
         except sqlite3.Error as e:
 

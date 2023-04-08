@@ -1,4 +1,4 @@
-from inventoryFrame import make_inventory_frame
+from inventoryFrame import InventoryFrame
 import signupFrame
 import sqlite3
 from tkinter import *
@@ -9,7 +9,7 @@ def login(root, username_entry, password_entry, valid_combos, dne_label, incorre
     passwordInput = password_entry.get()
     if usernameInput.lower() in valid_combos:
         if passwordInput == valid_combos[usernameInput.lower()][0]:
-            make_inventory_frame(root, valid_combos[usernameInput.lower()][1])
+            InventoryFrame(root, valid_combos[usernameInput.lower()][1]).build_tree()
         else:
             dne_label.place_forget()
             incorrect_label.place(anchor="center", relx=0.5, rely=0.5)
