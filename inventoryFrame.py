@@ -30,8 +30,10 @@ class InventoryFrame:
         self.frame = Frame(root, width=800, height=600)
         self.frame.grid(row=0, column=0)
         self.tree = None
-        self.label_font = ("arial", 30, "bold")
-        self.heading_font = ("arial", 15)
+        self.tree_font = ("arial", 15)
+        self.label_font = ("courier", 30, "bold")
+        self.button_font = ("courier", 15, "bold")
+        self.heading_font = ("courier", 15, "bold")
 
     def build_tree(self):
         main_heading = Label(self.frame, text=f"{self.location} Store Items",
@@ -51,44 +53,48 @@ class InventoryFrame:
         try:
             rows = self.cursor.execute(
                 f"SELECT * FROM Inventory WHERE Store='{self.location}'")
-            self.tree = ttk.Treeview(self.frame, show="headings")
+            self.tree = ttk.Treeview(self.frame, show="headings", height=150)
             style = ttk.Style()
-            style.configure("Treeview.Heading", font=self.heading_font)
+            style.configure("Treeview.Heading", font=self.tree_font)
             self.tree['columns'] = ("ID", "Item Name", "Count")
-            self.tree.column("ID", anchor=CENTER, minwidth=100)
-            self.tree.column("Item Name", anchor=CENTER, minwidth=300)
-            self.tree.column("Count", anchor=CENTER, minwidth=200)
+            self.tree.column("ID", anchor=CENTER, minwidth=50)
+            self.tree.column("Item Name", anchor=CENTER, minwidth=100)
+            self.tree.column("Count", anchor=CENTER, minwidth=50)
             self.tree.heading("ID", text="ID", anchor=W)
             self.tree.heading("Item Name", text="Item", anchor=CENTER)
             self.tree.heading("Count", text="Count ", anchor=W)
-            item_count = 0
             add_button = Button(self.frame, text="Add Items to this store",
                                 font=self.heading_font,
                                 command=lambda: self.add_database(
                                     item_entry.get(),
                                     amount_entry.get()))
             delete_button = Button(self.frame, text="Delete Selected",
-                                   command=self.delete_from_db)
+                                   command=self.delete_from_db,
+                                   font=self.button_font)
             update_button = Button(self.frame, text="Update Selected",
+                                   font=self.button_font,
                                    command=lambda: self.update_init(item_entry,
-                                                               amount_entry,
-                                                               add_button))
+                                                                    amount_entry,
+                                                                    add_button))
             for row in rows:
-                item_count += 1
+                self.tree["height"] += 1
                 self.tree.insert(parent='', index="end", iid=row[0],
                                  values=(row[0], row[1], row[3]))
-            self.tree["height"] = item_count
-            self.tree.place(anchor="center", relwidth=0.85, relx=0.45, rely=0.5)
+            self.tree.place(anchor="center", relwidth=0.75, relx=0.4, rely=0.5,
+                            height=200)
             main_heading.place(anchor="nw", bordermode="outside", in_=self.tree,
                                relx=0, rely=0, y=-50)
-            delete_button.place(anchor="center", relx=0.94, rely=0.46)
-            update_button.place(anchor="center", relx=0.94, rely=0.54)
+            delete_button.place(anchor="center", relx=0.89, rely=0.46)
+            update_button.place(anchor="center", relx=0.89, rely=0.54)
             item_name.place(anchor="e", relx=0.1, rely=0.80)
             item_entry.place(relwidth=0.325, relx=0.1, rely=0.79)
             amount.place(anchor="e", relx=0.55, rely=0.80)
             amount_entry.place(relwidth=0.325, relx=0.55, rely=0.79)
             add_button.place(anchor="center", relwidth=0.85, relx=0.45,
                              rely=0.89)
+            scrollbar = Scrollbar(orient="vertical", command=self.tree.yview)
+            self.tree.configure(yscrollcommand=scrollbar.set)
+            scrollbar.place(anchor="nw", rely=0.12, in_=self.tree, height=166)
         except sqlite3.Error as e:
             print(f"Error {e.args[0]}")
         return self.frame
@@ -122,8 +128,8 @@ class InventoryFrame:
         item_id = int(self.tree.focus())
         try:
             query = self.cursor.execute("SELECT Name FROM Inventory "
-                                   f"WHERE Store='{self.location}' "
-                                   f"AND Id={item_id}")
+                                        f"WHERE Store='{self.location}' "
+                                        f"AND Id={item_id}")
             item_name = query.fetchone()
             response = messagebox.askokcancel("Delete Item",
                                               f"Are you sure you would like to "
@@ -132,8 +138,8 @@ class InventoryFrame:
                                               f"undone")
             if response:
                 self.cursor.execute("DELETE FROM Inventory "
-                               f"WHERE Store='{self.location}' "
-                               f"AND Id={item_id}")
+                                    f"WHERE Store='{self.location}' "
+                                    f"AND Id={item_id}")
                 self.connection.commit()
                 self.refresh_lists()
             else:
@@ -165,8 +171,8 @@ class InventoryFrame:
                     amount_entry.insert(0, amount)
                     add_button.config(text="Update selected item in the store",
                                       command=lambda: self.update_database(item_entry,
-                                                                      amount_entry,
-                                                                      add_button))
+                                                                           amount_entry,
+                                                                           add_button))
         except sqlite3.Error as e:
             print(f"Error {e.args[0]}")
 

@@ -51,12 +51,12 @@ def make_login_frame(root):
     loginFrame = Frame(root, width=800, height=600)
     loginFrame.grid(row=0, column=0)
 
-    companyLabel = Label(loginFrame, text="Company Name", font=largeFont)
+    companyLabel = Label(loginFrame, text="Sports World", font=largeFont)
     companyLabel.place(anchor="center", relx=0.5, rely=0.2)
 
     usernameFrame = Frame(loginFrame)
     usernameFrame.place(anchor="center", relx=0.5, rely=0.4)
-    usernameLabel = Label(usernameFrame, text="username: ", font=smallFont)
+    usernameLabel = Label(usernameFrame, text="Username: ", font=smallFont)
     usernameLabel.pack(side="left")
     usernameEntry = Entry(usernameFrame, font=smallFont, width=30)
     usernameEntry.pack(side="right")
@@ -64,15 +64,15 @@ def make_login_frame(root):
 
     passwordFrame = Frame(loginFrame)
     passwordFrame.place(anchor="center", relx=0.5, rely=0.45)
-    passwordLabel = Label(passwordFrame, text="password: ", font=smallFont)
+    passwordLabel = Label(passwordFrame, text="Password: ", font=smallFont)
     passwordLabel.pack(side="left")
-    passwordEntry = Entry(passwordFrame, font=smallFont, width=30)
+    passwordEntry = Entry(passwordFrame, font=smallFont, width=30, show="*")
     passwordEntry.pack(side="right")
 
     loginButton = Button(loginFrame, text="Login", font=smallFont, width=15, height=2, command=lambda: login(root, usernameEntry, passwordEntry, validCombos, DNELabel, incorrectLabel))
     loginButton.place(anchor="center", relx=0.5, rely=0.575)
 
-    signupButton = Button(loginFrame, text="Signup", font=smallFont, width=15, height=2, command=lambda: signup(root))
+    signupButton = Button(loginFrame, text="Sign Up", font=smallFont, width=15, height=2, command=lambda: signup(root))
     signupButton.place(anchor="center", relx=0.5, rely=0.95)
 
     DNELabel = Label(loginFrame, text="The username you have entered does not exist please try again or press signup", font=smallFont, fg="red")
