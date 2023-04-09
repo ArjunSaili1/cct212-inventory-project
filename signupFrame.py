@@ -69,7 +69,7 @@ def make_signup_frame(root):
     passwordFrame.place(anchor="center", relx=0.5, rely=0.45)
     passwordLabel = Label(passwordFrame, text="password: ", font=smallFont)
     passwordLabel.pack(side="left")
-    passwordEntry = Entry(passwordFrame, font=smallFont, width=30)
+    passwordEntry = Entry(passwordFrame, font=smallFont, width=30, show="*")
     passwordEntry.pack(side="right")
 
     storeFrame = Frame(signupFrame)
