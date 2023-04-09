@@ -54,7 +54,7 @@ def make_signup_frame(root):
     signupFrame = Frame(root, width=800, height=600)
     signupFrame.grid(row=0, column=0)
 
-    companyLabel = Label(signupFrame, text="Signup", font=largeFont)
+    companyLabel = Label(signupFrame, text="Sports World", font=largeFont)
     companyLabel.place(anchor="center", relx=0.5, rely=0.2)
 
     usernameFrame = Frame(signupFrame)
@@ -82,7 +82,7 @@ def make_signup_frame(root):
     storeMenu = OptionMenu(storeFrame, storeVariable, *stores)
     storeMenu.pack(side="right")
 
-    signupButton = Button(signupFrame, text="Signup", font=smallFont, width=15, height=2, command=lambda: signup(root, usernameEntry, passwordEntry, storeVariable, missingLabel, existsLabel))
+    signupButton = Button(signupFrame, text="Sign Up", font=smallFont, width=15, height=2, command=lambda: signup(root, usernameEntry, passwordEntry, storeVariable, missingLabel, existsLabel))
     signupButton.place(anchor="center", relx=0.5, rely=0.625)
 
     backButton = Button(signupFrame, text="< Back", font=smallFont, command=lambda: back(root))

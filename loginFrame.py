@@ -72,7 +72,7 @@ def make_login_frame(root):
     loginButton = Button(loginFrame, text="Login", font=smallFont, width=15, height=2, command=lambda: login(root, usernameEntry, passwordEntry, validCombos, DNELabel, incorrectLabel))
     loginButton.place(anchor="center", relx=0.5, rely=0.575)
 
-    signupButton = Button(loginFrame, text="Signup", font=smallFont, width=15, height=2, command=lambda: signup(root))
+    signupButton = Button(loginFrame, text="Sign Up", font=smallFont, width=15, height=2, command=lambda: signup(root))
     signupButton.place(anchor="center", relx=0.5, rely=0.95)
 
     DNELabel = Label(loginFrame, text="The username you have entered does not exist please try again or press signup", font=smallFont, fg="red")
