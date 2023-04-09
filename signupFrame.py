@@ -59,7 +59,7 @@ def make_signup_frame(root):
 
     usernameFrame = Frame(signupFrame)
     usernameFrame.place(anchor="center", relx=0.5, rely=0.4)
-    usernameLabel = Label(usernameFrame, text="username: ", font=smallFont)
+    usernameLabel = Label(usernameFrame, text="Username: ", font=smallFont)
     usernameLabel.pack(side="left")
     usernameEntry = Entry(usernameFrame, font=smallFont, width=30)
     usernameEntry.pack(side="right")
@@ -67,7 +67,7 @@ def make_signup_frame(root):
 
     passwordFrame = Frame(signupFrame)
     passwordFrame.place(anchor="center", relx=0.5, rely=0.45)
-    passwordLabel = Label(passwordFrame, text="password: ", font=smallFont)
+    passwordLabel = Label(passwordFrame, text="Password: ", font=smallFont)
     passwordLabel.pack(side="left")
     passwordEntry = Entry(passwordFrame, font=smallFont, width=30, show="*")
     passwordEntry.pack(side="right")
