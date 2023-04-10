@@ -125,28 +125,33 @@ class InventoryFrame:
             print(f"Error {e.args[0]}")
 
     def delete_from_db(self):
-        item_id = int(self.tree.focus())
         try:
-            query = self.cursor.execute("SELECT Name FROM Inventory "
-                                        f"WHERE Store='{self.location}' "
-                                        f"AND Id={item_id}")
-            item_name = query.fetchone()
-            response = messagebox.askokcancel("Delete Item",
+            item_id = int(self.tree.focus())
+            try:
+                query = self.cursor.execute("SELECT Name FROM Inventory "
+                                            f"WHERE Store='{self.location}' "
+                                            f"AND Id={item_id}")
+                item_name = query.fetchone()
+                response = messagebox.askokcancel("Delete Item",
                                               f"Are you sure you would like to "
                                               f"delete {item_name[0]} from your "
                                               f"inventory? This action cannot be "
                                               f"undone")
-            if response:
-                self.cursor.execute("DELETE FROM Inventory "
+                if response:
+                    self.cursor.execute("DELETE FROM Inventory "
                                     f"WHERE Store='{self.location}' "
                                     f"AND Id={item_id}")
-                self.connection.commit()
-                self.refresh_lists()
-            else:
-                messagebox.showinfo("Delete Status",
+                    self.connection.commit()
+                    self.refresh_lists()
+                else:
+                    messagebox.showinfo("Delete Status",
                                     "Operation Cancelled.")
-        except sqlite3.Error as e:
-            print(f"Error {e.args[0]}")
+
+            except sqlite3.Error as e:
+                print(f"Error {e.args[0]}")
+
+        except:
+            print("test")
 
     def refresh_lists(self):
         self.tree.delete(*self.tree.get_children())
