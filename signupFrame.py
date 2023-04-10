@@ -48,8 +48,8 @@ def back(root):
 
 def make_signup_frame(root):
 
-    smallFont = ("arial", 16, "bold")
-    largeFont = ("arial", 72, "bold")
+    smallFont = ("courier", 16, "bold")
+    largeFont = ("courier", 72, "bold")
 
     signupFrame = Frame(root, width=800, height=600)
     signupFrame.grid(row=0, column=0)
@@ -86,7 +86,7 @@ def make_signup_frame(root):
     signupButton.place(anchor="center", relx=0.5, rely=0.625)
 
     backButton = Button(signupFrame, text="< Back", font=smallFont, command=lambda: back(root))
-    backButton.place(anchor="center", relx=0.06, rely=0.035)
+    backButton.place(anchor="center", relx=0.06, rely=0.024)
 
     missingLabel = Label(signupFrame, text="The username or password you have entered is invalid please try again", font=smallFont, fg="red")
     existsLabel = Label(signupFrame, text="The username you have entered already exists please login", font=smallFont, fg="red")

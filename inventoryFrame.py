@@ -30,12 +30,15 @@ class InventoryFrame:
         self.frame = Frame(root, width=800, height=600)
         self.frame.grid(row=0, column=0)
         self.tree = None
+        self.error_label = None
         self.tree_font = ("arial", 15)
         self.label_font = ("courier", 30, "bold")
         self.button_font = ("courier", 15, "bold")
         self.heading_font = ("courier", 15, "bold")
 
     def build_tree(self):
+        self.error_label = Label(self.frame, text="Please select an item", fg="red", font=self.heading_font)
+
         main_heading = Label(self.frame, text=f"{self.location} Store Items",
                              font=self.label_font)
         item_name = Label(self.frame, text="Item: ",
@@ -127,6 +130,7 @@ class InventoryFrame:
     def delete_from_db(self):
         try:
             item_id = int(self.tree.focus())
+            self.error_label.place_forget()
             try:
                 query = self.cursor.execute("SELECT Name FROM Inventory "
                                             f"WHERE Store='{self.location}' "
@@ -151,7 +155,7 @@ class InventoryFrame:
                 print(f"Error {e.args[0]}")
 
         except:
-            print("test")
+            self.error_label.place(anchor="center", relx=0.5, rely=0.725)
 
     def refresh_lists(self):
         self.tree.delete(*self.tree.get_children())
@@ -169,15 +173,20 @@ class InventoryFrame:
             entry = self.cursor.execute("SELECT Id,Name,Store,Amount "
                                         "FROM Inventory")
             for (id, name, store, amount) in entry:
-                if id == int(self.tree.focus()):
-                    item_entry.delete(0, END)
-                    item_entry.insert(0, name)
-                    amount_entry.delete(0, END)
-                    amount_entry.insert(0, amount)
-                    add_button.config(text="Update selected item in the store",
+                try:
+                    if id == int(self.tree.focus()):
+                        self.error_label.place_forget()
+                        item_entry.delete(0, END)
+                        item_entry.insert(0, name)
+                        amount_entry.delete(0, END)
+                        amount_entry.insert(0, amount)
+                        add_button.config(text="Update selected item in the store",
                                       command=lambda: self.update_database(item_entry,
                                                                            amount_entry,
                                                                            add_button))
+                except:
+                    self.error_label.place(anchor="center", relx=0.5, rely=0.725)
+
         except sqlite3.Error as e:
             print(f"Error {e.args[0]}")
 
@@ -212,5 +221,3 @@ class InventoryFrame:
                                                                     new_amount))
         except sqlite3.Error as e:
             print(f"Error {e.args[0]}")
-
-
