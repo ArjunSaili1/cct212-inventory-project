@@ -3,7 +3,7 @@ from tkinter import *
 
 root = Tk()
 
-root.title("Company Name")
+root.title("Sports World")
 root.geometry("800x600")
 root.resizable(False, False)
 

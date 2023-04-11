@@ -45,8 +45,8 @@ def make_login_frame(root):
         if con:
             con.close()
 
-    smallFont = ("arial", 16, "bold")
-    largeFont = ("arial", 72, "bold")
+    smallFont = ("courier", 16, "bold")
+    largeFont = ("courier", 72, "bold")
 
     loginFrame = Frame(root, width=800, height=600)
     loginFrame.grid(row=0, column=0)
